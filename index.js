@@ -5,6 +5,7 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 require('dotenv').config();
+const cookieParser = require('cookie-parser');
 
 const app = express();
 
@@ -14,7 +15,7 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
-
+app.use(cookieParser());
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI)
 .then(() => console.log('✅ MongoDB Connected Successfully'))
@@ -90,12 +91,12 @@ const enquirySchema = new mongoose.Schema({
 const Enquiry = mongoose.model('Enquiry', enquirySchema);
 
 // JWT Secret Key
-const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-this-in-production';
+const JWT_SECRET = process.env.JWT_SECRET || "Axora@21";
 
 // Middleware to verify JWT token
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+  const token = authHeader?.split(' ')[1] || req.cookies?.auth_token;
 
   if (!token) {
     return res.status(401).json({
@@ -116,7 +117,8 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-// ============= AUTH ROUTES =============
+
+
 
 // Initialize Admin User
 const initializeAdmin = async () => {
