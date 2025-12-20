@@ -11,7 +11,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://axora-global-frontend.vercel.app'],
+  origin: ['http://localhost:5173', 'https://axora-global-frontend.vercel.app','https://www.axoraglobal.com'],
   credentials: true
 }));
 app.use(express.json());
